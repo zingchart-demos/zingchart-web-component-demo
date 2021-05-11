@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>ZingChart Web Component Dashboard</title>
+    <link rel="stylesheet" href="index.css"></link>
+    <script type="module">
+      import '../node_modules/zinggrid/es6.js';
+      import '../node_modules/zingchart/es6.js';
+      import ZCArea from '../node_modules/zingchart-web-component/charts/ZCArea.js';
+      import ZCBar from '../node_modules/zingchart-web-component/charts/ZCBar.js';
+      import ZCLine from '../node_modules/zingchart-web-component/charts/ZCLine.js';
+      import ZCPie from '../node_modules/zingchart-web-component/charts/ZCPie.js';
+      import ZingChart from '../node_modules/zingchart-web-component/ZingChart.js';
+
+      customElements.define('zing-chart', ZingChart);
+      customElements.define('zc-area', ZCArea);
+      customElements.define('zc-bar', ZCBar);
+      customElements.define('zc-line', ZCLine);
+      customElements.define('zc-pie', ZCPie);
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but ZingChart doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app">
+      <div class="dashboard">
+        <header>
+          <h1>Your Sales Dashboard</h1>
+          <section style="display: flex; align-items: center; margin-right: 26px;">
+            <div style="margin-right:10px">Showing data from</div>
+            <input type="date"/>
+          </section>
+        </header>
+
+        <div class="dashboard">
+
+          <section class="dashboard__summary">
+            <zc-area total-sales-spark theme="spark" width="400px" height="200px">
+              <zc-title text="Latest Transactions"></zc-title>
+              <zc-theme type="spark"></zc-theme>
+              <zc-tooltip visible="false"></zc-tooltip>
+              <zc-crosshair-x></zc-crosshair-x>
+              <zc-scale-x step="second" min-value="1554550724000">
+                <zc-transform type="date" all="%m/%d"></zc-transform>
+              </zc-scale-x>
+              <zc-scale-y short="true"></zc-scale-y>
+              <zc-series>
+                <zc-series-0 values="[0, 1, 2, 3, 4, 5, 6]" line-color="#04A3F5"></zc-series-0>
+              </zc-series>
+            </zc-area>
+            <zc-area total-ytd-spark width="400px" height="200px">
+              <zc-theme type="spark"></zc-theme>
+              <zc-title text="Last 30 Days"></zc-title>
+              <zc-tooltip visible="false"></zc-tooltip>
+              <zc-scale-x step="second" min-value="1554550724000">
+                <zc-transform type="date" all="%m/%d"></zc-transform>
+              </zc-scale-x>
+              <zc-scale-y short="true"></zc-scale-y>
+              <zc-series>
+                <zc-series-0 values="[0, 1, 2, 3, 4, 5, 6]" line-color="#04A3F5"></zc-series-0>
+              </zc-series>
+            </zc-area>
+            <zc-line latest-transactions ref="latestTransactions" height="200px">
+              <zc-crosshair-x>
+                <zc-marker visible="false"></zc-marker>
+                <zc-plot-label negation="currency" thousands-separator="," text="%v"></zc-plot-label>
+              </zc-crosshair-x>
+              <zc-plot aspect="spline"></zc-plot>
+              <zc-scale-x>
+                <zc-transform type="date" all="%M %d"></zc-transform>
+              </zc-scale-x>
+              <zc-scale-y short="true" short-unit="K">
+              </zc-scale-y>
+              <zc-series>
+                <zc-series-0 values="[0, 1, 2, 1, 2, 5, 1]" line-color="#04A3F5"></zc-series-0>
+              </zc-series>
+            </zc-line>
+          </section>
+
+          <section class="content">
+            <div class="content__col">
+              <div class="content__row">
+                <div class="cell" style="flex:2;">
+                  <zing-grid latest-transactions-grid ref="myGrid" caption="Latest Transactions" layout="row" pager page-size="3" page-size-options="2,5,20" control-bar="false" style="width: 100%;" sort filter height="150px">
+                    <zg-colgroup>
+                      <zg-column index="timestamp" header="Date" type="date" ></zg-column>
+                      <zg-column index="company" header="Company" type="text"></zg-column>
+                      <zg-column index="amount" header="Cost" type="currency"></zg-column>
+                      <zg-column index="license_type" header="License" type="select"
+                      type-select-options="enterprise,saas,website"></zg-column>
+                      <zg-column index="purchase_type" header="Type" type="select" type-select-options="renewal, new, cancellation"></zg-column>
+                    </zg-colgroup>
+                  </zing-grid>
+                </div>
+                <div class="cell">
+                  <zc-pie transaction-breakdown ref="transactionBreakdown" :data="transactions">
+                    <zc-series>
+                      <zc-series-0 values="[1]"></zc-series-0>
+                      <zc-series-1 values="[2]"></zc-series-1>
+                      <zc-series-2 values="[3]"></zc-series-2>
+                      <zc-series-3 values="[4]"></zc-series-3>
+                    </zc-series>
+                  </zc-pie>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>
